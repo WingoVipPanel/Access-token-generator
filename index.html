@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Access Generator — SUMIT YL3</title>
+  <meta name="description" content="Access Generator by SUMIT YL3 - Dark luxury access token generator tool for extracting and parsing authentication tokens.">
+  <meta property="og:title" content="Access Generator — SUMIT YL3">
+  <meta property="og:description" content="Access Generator by SUMIT YL3 - Dark luxury access token generator tool for extracting and parsing authentication tokens.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome 6.5.1 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Google Fonts: Inter (body), Instrument Serif (headings), JetBrains Mono (code) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================================
+       THEME VARIABLES (Dark Luxury Aesthetic)
+       ========================================================= */
+    :root {
+      --bg: #0a0a0b;
+      --gold: #d4a259;
+      --gold-bright: #e8c084;
+      --gold-dim: #8a6a3a;
+      --gold-glow: rgba(212, 162, 89, 0.35);
+      --text-gray: #9ca3af;
+      --green-safe: #22c55e;
+      --red-error: #ef4444;
+      --card-border: rgba(212, 162, 89, 0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; background: var(--bg); }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: #e8e8e8;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 14px;
+      overflow-x: hidden;
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .serif { font-family: 'Instrument Serif', serif; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* =========================================================
+       1. PRELOADER ANIMATION
+       ========================================================= */
+    #preloader {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    #preloader.done {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .preloader-logo {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: linear-gradient(145deg, #1a1a1d 0%, #0f0f11 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 1px rgba(212,162,89,0.4), 0 0 50px -10px rgba(212,162,89,0.6);
+      position: relative;
+      overflow: hidden;
+      animation: preloaderPulse 1.6s ease-in-out infinite;
+    }
+    @keyframes preloaderPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    .preloader-logo i {
+      font-size: 28px;
+      background: linear-gradient(180deg, #f5d9a4 0%, #d4a259 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 10px rgba(212,162,89,0.8));
+      z-index: 2;
+    }
+    .preloader-logo::after {
+      content: "";
+      position: absolute;
+      top: 0; left: -150%;
+      width: 150%; height: 100%;
+      background: linear-gradient(100deg, transparent 30%, rgba(232,192,132,0.7) 50%, transparent 70%);
+      animation: preloaderShine 1.8s ease-in-out infinite;
+      z-index: 3;
+      pointer-events: none;
+    }
+    @keyframes preloaderShine {
+      0% { left: -150%; }
+      35%, 100% { left: 150%; }
+    }
+    .preloader-text {
+      font-family: 'Instrument Serif', serif;
+      font-size: 13px;
+      letter-spacing: 0.45em;
+      color: var(--gold);
+      text-transform: uppercase;
+      opacity: 0.8;
+      animation: fadeText 2s ease-in-out infinite;
+    }
+    @keyframes fadeText {
+      0%, 100% { opacity: 0.35; }
+      50% { opacity: 0.95; }
+    }
+
+    /* =========================================================
+       BACKGROUND EFFECTS: Orbs, Floating Particles, Grid, Grain
+       ========================================================= */
+    .bg-orbs {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.45;
+    }
+    .orb-1 {
+      width: 500px;
+      height: 500px;
+      top: -240px;
+      left: -200px;
+      background: radial-gradient(circle, rgba(212,162,89,0.22), transparent 65%);
+      animation: orbFloat1 18s ease-in-out infinite;
+    }
+    .orb-2 {
+      width: 420px;
+      height: 420px;
+      bottom: -200px;
+      right: -150px;
+      background: radial-gradient(circle, rgba(212,162,89,0.15), transparent 65%);
+      animation: orbFloat2 22s ease-in-out infinite;
+    }
+    @keyframes orbFloat1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(70px, 50px) scale(1.12); }
+    }
+    @keyframes orbFloat2 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-60px, -70px) scale(1.1); }
+    }
+
+    .particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--gold-bright);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--gold);
+      opacity: 0;
+      animation: particleFloat linear infinite;
+    }
+    @keyframes particleFloat {
+      0% { opacity: 0; transform: translateY(100vh) translateX(0) scale(0.3); }
+      12% { opacity: 0.85; }
+      88% { opacity: 0.85; }
+      100% { opacity: 0; transform: translateY(-80px) translateX(60px) scale(1); }
+    }
+
+    .grain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.035;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(212,162,89,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212,162,89,0.025) 1px, transparent 1px);
+      background-size: 50px 50px;
+      mask-image: radial-gradient(circle at 50% 35%, black 0%, transparent 75%);
+      -webkit-mask-image: radial-gradient(circle at 50% 35%, black 0%, transparent 75%);
+    }
+
+    /* =========================================================
+       MAIN LUXURY CARD WRAPPER & 3D TILT
+       ========================================================= */
+    .lux-card-wrap {
+      perspective: 1200px;
+      width: 100%;
+      max-width: 480px;
+      position: relative;
+      z-index: 10;
+      margin: auto;
+    }
+    .lux-card {
+      background: linear-gradient(180deg, rgba(19,19,22,0.88) 0%, rgba(10,10,11,0.96) 100%);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--card-border);
+      border-radius: 22px;
+      position: relative;
+      overflow: hidden;
+      box-shadow:
+        0 1px 0 0 rgba(255,255,255,0.05) inset,
+        0 10px 30px -10px rgba(0,0,0,0.6),
+        0 40px 80px -30px rgba(0,0,0,0.9),
+        0 0 100px -45px rgba(212,162,89,0.25);
+      transform-style: preserve-3d;
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+      will-change: transform;
+    }
+    .lux-card::before {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border: 1px solid rgba(212,162,89,0.05);
+      border-radius: 15px;
+      pointer-events: none;
+    }
+    .lux-card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 20%;
+      right: 20%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-bright), transparent);
+      opacity: 0.65;
+    }
+
+    /* CORNER BRACKETS */
+    .corner {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      pointer-events: none;
+      z-index: 5;
+      opacity: 0.55;
+    }
+    .corner::before, .corner::after { content: ""; position: absolute; background: var(--gold); }
+    .corner::before { width: 1px; height: 100%; }
+    .corner::after { width: 100%; height: 1px; }
+    .corner-tl { top: 13px; left: 13px; } .corner-tl::before { top: 0; left: 0; } .corner-tl::after { top: 0; left: 0; }
+    .corner-tr { top: 13px; right: 13px; } .corner-tr::before { top: 0; right: 0; } .corner-tr::after { top: 0; right: 0; }
+    .corner-bl { bottom: 13px; left: 13px; } .corner-bl::before { bottom: 0; left: 0; } .corner-bl::after { bottom: 0; left: 0; }
+    .corner-br { bottom: 13px; right: 13px; } .corner-br::before { bottom: 0; right: 0; } .corner-br::after { bottom: 0; right: 0; }
+
+    /* =========================================================
+       2. HEADER MONOGRAM BADGE & TITLE
+       ========================================================= */
+    .monogram {
+      position: relative;
+      width: 54px;
+      height: 54px;
+      border-radius: 15px;
+      background: linear-gradient(145deg, #1a1a1d 0%, #0f0f11 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow:
+        0 0 0 1px rgba(212,162,89,0.35),
+        0 8px 20px -8px rgba(0,0,0,0.8),
+        0 0 35px -12px rgba(212,162,89,0.5);
+      overflow: hidden;
+    }
+    .monogram::before {
+      content: "";
+      position: absolute;
+      inset: 3px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 30% 20%, rgba(212,162,89,0.15), transparent 70%);
+      pointer-events: none;
+    }
+    .monogram::after {
+      content: "";
+      position: absolute;
+      top: 0; left: -150%;
+      width: 150%; height: 100%;
+      background: linear-gradient(100deg, transparent 30%, rgba(232,192,132,0.4) 50%, transparent 70%);
+      animation: monogramShine 4.8s ease-in-out infinite;
+    }
+    @keyframes monogramShine {
+      0% { left: -150%; }
+      22%, 100% { left: 150%; }
+    }
+    .monogram-text {
+      font-family: 'Instrument Serif', serif;
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      background: linear-gradient(180deg, #f5d9a4 0%, #d4a259 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 10px rgba(212,162,89,0.6));
+      position: relative;
+      z-index: 2;
+      line-height: 1;
+    }
+
+    .brand-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: 24px;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      overflow: hidden;
+    }
+    .brand-title .word { display: inline-block; overflow: hidden; vertical-align: bottom; }
+    .brand-title .letter {
+      display: inline-block;
+      transform: translateY(100%);
+      opacity: 0;
+      animation: letterUp 0.65s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+    @keyframes letterUp { to { transform: translateY(0); opacity: 1; } }
+    .brand-title em { color: var(--gold-bright); font-style: italic; text-shadow: 0 0 18px rgba(212,162,89,0.5); }
+
+    .brand-tagline {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 9px;
+      color: #6b7280;
+      margin-top: 3px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      font-weight: 500;
+      opacity: 0;
+      animation: fadeIn 0.8s ease 0.5s forwards;
+    }
+    @keyframes fadeIn { to { opacity: 1; } }
+    .brand-tagline::before { content: ""; width: 12px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-dim)); }
+    .brand-tagline::after { content: ""; width: 12px; height: 1px; background: linear-gradient(90deg, var(--gold-dim), transparent); }
+
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 100px;
+      background: linear-gradient(135deg, rgba(212,162,89,0.12), rgba(212,162,89,0.04));
+      border: 1px solid rgba(212,162,89,0.3);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-bright);
+      box-shadow: 0 0 18px -4px rgba(212,162,89,0.4), 0 1px 0 0 rgba(255,255,255,0.08) inset;
+    }
+    .live-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 8px var(--gold), 0 0 16px rgba(212,162,89,0.6);
+      animation: pulseDot 2s infinite;
+    }
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(0.85); }
+    }
+
+    /* =========================================================
+       3. HOW TO USE SECTION (Exact Roman Numerals Match)
+       ========================================================= */
+    .htu-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+    .htu-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .htu-header i { color: var(--gold-bright); font-size: 12px; }
+    .htu-header span {
+      color: #fff;
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .htu-step {
+      display: flex;
+      gap: 12px;
+      font-size: 11.5px;
+      color: var(--text-gray);
+      margin-bottom: 15px;
+    }
+    .htu-step:last-child { margin-bottom: 0; }
+    .htu-num {
+      background: rgba(212, 162, 89, 0.15);
+      color: var(--gold-bright);
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 600;
+      font-size: 13px;
+      min-width: 25px;
+      height: 22px;
+      padding: 0 7px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+      border: 1px solid rgba(212, 162, 89, 0.25);
+      box-shadow: 0 2px 8px -2px rgba(212, 162, 89, 0.4);
+      line-height: 1;
+    }
+    .htu-text {
+      color: var(--text-gray);
+      font-size: 11.5px;
+      line-height: 1.55;
+      margin: 0 0 4px 0;
+    }
+    .htu-text strong { color: #fff; font-weight: 600; }
+    .htu-text code {
+      color: var(--gold-bright);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      background: rgba(212, 162, 89, 0.08);
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+    .htu-safe {
+      color: var(--green-safe);
+      font-size: 10.5px;
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .htu-safe i { font-size: 9px; }
+    .htu-url-box {
+      background: rgba(212, 162, 89, 0.05);
+      border: 1px solid rgba(212, 162, 89, 0.12);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-top: 6px;
+      margin-bottom: 6px;
+    }
+    .htu-url-label {
+      font-size: 9.5px;
+      color: var(--text-gray);
+      margin: 0 0 4px 0;
+      display: block;
+      letter-spacing: 0.02em;
+    }
+    .htu-url-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.5px;
+      color: #d1d5db;
+      word-break: break-all;
+      display: block;
+      line-height: 1.45;
+    }
+    .htu-hint {
+      font-size: 10px;
+      color: #6b7280;
+      margin-top: 6px;
+      line-height: 1.45;
+    }
+
+    /* =========================================================
+       4. VIDEO TUTORIAL (Self-Contained Luxury CSS Canvas)
+       ========================================================= */
+    .video-card {
+      display: block;
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(212,162,89,0.15);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 10px 30px -10px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.02) inset;
+      height: 160px;
+      background: radial-gradient(circle at 50% 40%, #1f1f26 0%, #111114 60%, #0a0a0b 100%);
+      text-decoration: none;
+    }
+    .video-card:hover {
+      border-color: rgba(212,162,89,0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 18px 45px -12px rgba(0,0,0,0.8), 0 0 50px -15px rgba(212,162,89,0.3);
+    }
+    .video-bg-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 50% 50%, rgba(212,162,89,0.1) 1px, transparent 1px);
+      background-size: 16px 16px;
+      opacity: 0.6;
+    }
+    .play-btn {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        0 1px 0 0 rgba(255,255,255,0.35) inset,
+        0 12px 35px -8px rgba(239,68,68,0.7),
+        0 0 0 4px rgba(239,68,68,0.16);
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 2;
+    }
+    .play-btn::after {
+      content: "";
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 1px solid rgba(239,68,68,0.35);
+      animation: ringPulse 2s infinite;
+    }
+    @keyframes ringPulse {
+      0% { transform: scale(1); opacity: 0.6; }
+      100% { transform: scale(1.3); opacity: 0; }
+    }
+    .video-card:hover .play-btn { transform: translate(-50%, -50%) scale(1.08); }
+
+    /* =========================================================
+       5. PROVIDER LOGIN BUTTONS
+       ========================================================= */
+    .social-btn {
+      background: rgba(255,255,255,0.018);
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      color: #9ca3af;
+      cursor: pointer;
+    }
+    .social-btn:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(212,162,89,0.35);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px -8px rgba(212,162,89,0.4), 0 0 0 1px rgba(212,162,89,0.1) inset;
+    }
+
+    /* =========================================================
+       6. TOKEN INPUT
+       ========================================================= */
+    .lux-input {
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(255,255,255,0.07);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 100%;
+    }
+    .lux-input::placeholder { color: rgba(255,255,255,0.22); letter-spacing: 0.02em; }
+    .lux-input:focus {
+      outline: none;
+      border-color: var(--gold);
+      background: rgba(0,0,0,0.75);
+      box-shadow: 0 0 0 3px rgba(212,162,89,0.1), 0 0 30px -8px var(--gold-glow);
+    }
+
+    /* =========================================================
+       7. GENERATE BUTTON WITH SHINE EFFECT
+       ========================================================= */
+    .btn-lux {
+      background: linear-gradient(135deg, #e8c084 0%, #d4a259 40%, #a8814a 100%);
+      color: #0a0a0b;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-size: 11.5px;
+      border: none;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+      box-shadow:
+        0 1px 0 0 rgba(255,255,255,0.4) inset,
+        0 -1px 0 0 rgba(0,0,0,0.2) inset,
+        0 14px 35px -10px rgba(212,162,89,0.65),
+        0 0 0 1px rgba(212,162,89,0.4);
+      cursor: pointer;
+    }
+    .btn-lux:hover {
+      box-shadow:
+        0 1px 0 0 rgba(255,255,255,0.5) inset,
+        0 -1px 0 0 rgba(0,0,0,0.2) inset,
+        0 18px 45px -10px rgba(212,162,89,0.85),
+        0 0 0 1px rgba(212,162,89,0.5);
+      filter: brightness(1.04);
+      transform: translateY(-1px);
+    }
+    .btn-lux:active { transform: translateY(0); }
+    .btn-lux::before {
+      content: "";
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
+      transition: left 0.7s;
+    }
+    .btn-lux:hover::before { left: 100%; }
+    .btn-lux:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    /* =========================================================
+       8. OUTPUT SECTION & INFO TILES
+       ========================================================= */
+    .info-tile {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 11px;
+      padding: 9px 12px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.25s ease;
+    }
+    .info-tile::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 2px; height: 0;
+      background: linear-gradient(180deg, var(--gold-bright), var(--gold-dim));
+      transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .info-tile:hover { border-color: rgba(212,162,89,0.25); background: rgba(212,162,89,0.025); }
+    .info-tile:hover::before { height: 100%; }
+    .info-tile .lbl { font-size: 8.5px; text-transform: uppercase; color: var(--gold); letter-spacing: 0.14em; font-weight: 600; }
+    .info-tile .val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: #fff;
+      margin-top: 3px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .lux-out {
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(212,162,89,0.15);
+      border-left: 2px solid var(--gold);
+      border-radius: 9px;
+      padding: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--gold-bright);
+      word-break: break-all;
+      overflow-y: auto;
+      line-height: 1.65;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .lux-out::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+    .copy-btn {
+      font-size: 9.5px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 9px;
+      border-radius: 6px;
+      background: rgba(212,162,89,0.08);
+      color: var(--gold-bright);
+      border: 1px solid rgba(212,162,89,0.22);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .copy-btn:hover { background: rgba(212,162,89,0.2); color: #fff; border-color: rgba(212,162,89,0.45); }
+    .copy-btn.copied { background: rgba(34,197,94,0.2); color: #86efac; border-color: rgba(34,197,94,0.4); }
+
+    /* =========================================================
+       9. FOOTER SOCIAL PILLS
+       ========================================================= */
+    .social-pill {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 10px 8px;
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.005));
+      border: 1px solid rgba(255,255,255,0.05);
+      overflow: hidden;
+      text-decoration: none;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .social-pill::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      background: radial-gradient(circle at 50% 0%, var(--brand) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+    }
+    .social-pill:hover {
+      transform: translateY(-2px);
+      border-color: color-mix(in srgb, var(--brand) 45%, transparent);
+      box-shadow: 0 12px 28px -10px rgba(0,0,0,0.6), 0 0 25px -8px var(--brand);
+    }
+    .social-pill:hover::before { opacity: 0.16; }
+    .social-pill i {
+      font-size: 14px;
+      color: var(--brand);
+      filter: drop-shadow(0 0 6px color-mix(in srgb, var(--brand) 50%, transparent));
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 1;
+    }
+    .social-pill:hover i { transform: scale(1.15); filter: drop-shadow(0 0 12px var(--brand)); }
+    .social-pill span {
+      font-size: 9.5px;
+      font-weight: 500;
+      color: var(--text-gray);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 1;
+    }
+    .social-pill:hover span { color: #fff; }
+    .social-tg { --brand: #29b6f6; }
+    .social-yt { --brand: #ef4444; }
+    .social-ig { --brand: #ec4899; }
+
+    /* ORNAMENTAL DIVIDER */
+    .ornament { display: flex; align-items: center; gap: 10px; justify-content: center; }
+    .ornament .line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(212,162,89,0.35), transparent); max-width: 70px; }
+    .ornament .diamond { width: 5px; height: 5px; background: var(--gold); transform: rotate(45deg); box-shadow: 0 0 8px var(--gold-glow); }
+    .ornament .diamond.small { width: 3px; height: 3px; opacity: 0.6; box-shadow: none; }
+
+    .footer-head {
+      text-align: center;
+      font-size: 8.5px;
+      color: #6b7280;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    /* HIDE SCROLLBAR COMPLETELY */
+    html, body {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    ::-webkit-scrollbar, *::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      background: transparent !important;
+    }
+    * {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+
+    /* TERMS MODAL */
+    .modal-overlay {
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+    }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    .modal-content {
+      transform: scale(0.95) translateY(10px);
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
+
+    .hidden-el { display: none !important; }
+    .fade-up { animation: fadeUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* MOBILE RESPONSIVE STYLES */
+    @media (max-width: 480px) {
+      body { padding: 14px 10px; }
+      .lux-card { border-radius: 18px; }
+      .lux-card::before { inset: 6px; border-radius: 12px; }
+      .monogram { width: 48px; height: 48px; border-radius: 13px; }
+      .monogram-text { font-size: 19px; }
+      .brand-title { font-size: 21px; }
+      .brand-tagline { font-size: 8px; letter-spacing: 0.18em; }
+      .live-badge { padding: 3px 8px; font-size: 8px; }
+      .play-btn { width: 46px; height: 46px; }
+      .social-pill { padding: 9px 5px; gap: 5px; }
+      .social-pill i { font-size: 13px; }
+      .social-pill span { font-size: 9px; letter-spacing: 0.04em; }
+      .corner { width: 14px; height: 14px; }
+      .corner-tl, .corner-tr { top: 10px; }
+      .corner-bl, .corner-br { bottom: 10px; }
+      .corner-tl, .corner-bl { left: 10px; }
+      .corner-tr, .corner-br { right: 10px; }
+      .htu-box { padding: 13px; }
+    }
+    @media (max-width: 360px) {
+      .social-pill span { display: none; }
+      .social-pill { padding: 11px 6px; }
+      .social-pill i { font-size: 16px; }
+    }
+
+    /* REDUCED MOTION SUPPORT */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================
+       1. PRELOADER
+       ========================================================= -->
+  <div id="preloader" aria-hidden="true">
+    <div class="preloader-logo">
+      <i class="fas fa-crown"></i>
+    </div>
+    <span class="preloader-text">Loading</span>
+  </div>
+
+  <!-- BACKGROUND ATMOSPHERE (Orbs, Grid, Particles, Grain) -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+  </div>
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="particles" id="particles" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- MAIN CONTAINER (Max width 480px, Single Column) -->
+  <div class="lux-card-wrap" id="cardWrap">
+    <main class="lux-card p-5 sm:p-7" id="card">
+
+      <!-- GOLD CORNER BRACKETS -->
+      <div class="corner corner-tl" aria-hidden="true"></div>
+      <div class="corner corner-tr" aria-hidden="true"></div>
+      <div class="corner corner-bl" aria-hidden="true"></div>
+      <div class="corner corner-br" aria-hidden="true"></div>
+
+      <!-- =======================================================
+           2. HEADER (Monogram "SY" + Title + "Live" Badge)
+           ======================================================= -->
+      <header class="flex items-center gap-3.5 mb-6 reveal">
+        <!-- Monogram Badge "SY" -->
+        <div class="monogram" title="SUMIT YL3">
+          <span class="monogram-text">SY</span>
+        </div>
+
+        <!-- Title & Author Tagline -->
+        <div class="flex-1 min-w-0">
+          <h1 class="brand-title text-white" id="titleReveal">
+            <span class="word" data-text="Access"></span>
+            <em><span class="word" data-text="Generator"></span></em>
+          </h1>
+          <div class="brand-tagline">
+            <span>By SUMIT YL3</span>
+          </div>
+        </div>
+
+        <!-- Live Status Badge -->
+        <span class="live-badge" title="Service status: Active">
+          <span class="live-dot"></span>
+          Live
+        </span>
+      </header>
+
+      <!-- =======================================================
+           3. HOW TO USE (Exact Roman Numerals Match)
+           ======================================================= -->
+      <section class="htu-box reveal" aria-labelledby="htuTitle">
+        <div class="htu-header">
+          <i class="fas fa-book-open"></i>
+          <span id="htuTitle">How to Use</span>
+        </div>
+
+        <!-- Step i -->
+        <div class="htu-step">
+          <span class="htu-num">i</span>
+          <div>
+            <p class="htu-text">Select Provider &amp; Login below.</p>
+            <p class="htu-safe">
+              <i class="fas fa-shield-alt"></i> Safe: Official Garena Server (No Scam Risk)
+            </p>
+          </div>
+        </div>
+
+        <!-- Step ii -->
+        <div class="htu-step">
+          <span class="htu-num">ii</span>
+          <div class="w-full">
+            <p class="htu-text">After login, copy the URL containing <code>eat=</code> parameter</p>
+
+            <div class="htu-url-box">
+              <span class="htu-url-label">Example URL:</span>
+              <code class="htu-url-code">https://discstore.kiosgamer.com.id/?eat=14f060774299fb93a5...&amp;lang=en&amp;region=IND&amp;account_id=13062505451&amp;nickname=...</code>
+            </div>
+
+            <p class="htu-hint">The tool will extract the eat token automatically</p>
+          </div>
+        </div>
+
+        <!-- Step iii -->
+        <div class="htu-step">
+          <span class="htu-num">iii</span>
+          <p class="htu-text">Paste the URL or just the <strong>Eat Token</strong> below and click GENERATE</p>
+        </div>
+      </section>
+
+      <!-- =======================================================
+           4. VIDEO TUTORIAL (Card with thumbnail + play button)
+           ======================================================= -->
+      <section class="mb-5 reveal" aria-labelledby="videoTitle">
+        <div class="flex items-center gap-2 mb-2.5">
+          <i class="fab fa-youtube text-red-500 text-sm"></i>
+          <span id="videoTitle" class="text-[10px] font-semibold text-gray-400 uppercase tracking-[0.2em]">Video Tutorial</span>
+        </div>
+
+        <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="video-card flex flex-col justify-end p-3.5 group" title="Watch Video Tutorial on YouTube">
+          <div class="video-bg-grid"></div>
+
+          <!-- YouTube Decorative Watermark -->
+          <div class="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
+            <i class="fab fa-youtube text-7xl text-[color:var(--gold)]"></i>
+          </div>
+
+          <!-- Centered Play Button -->
+          <div class="play-btn">
+            <i class="fas fa-play text-white text-base ml-0.5"></i>
+          </div>
+
+          <div class="relative z-10 flex items-center justify-between text-white border-t border-white/[0.08] pt-2 mt-auto">
+            <p class="text-[10px] font-semibold tracking-[0.15em] uppercase text-gray-300">Click to Watch Tutorial</p>
+            <span class="text-[9px] text-[color:var(--gold-bright)] font-mono">HD Guide</span>
+          </div>
+        </a>
+      </section>
+
+      <!-- =======================================================
+           5. PROVIDER LOGIN (5 Buttons: Google, FB, Apple, X, VK)
+           ======================================================= -->
+      <section class="mb-5 reveal" aria-labelledby="providerTitle">
+        <p id="providerTitle" class="text-[10px] font-semibold text-gray-500 uppercase tracking-[0.2em] mb-2.5">Select Provider</p>
+        <div class="grid grid-cols-5 gap-2">
+          <button type="button" onclick="handleProviderSelect('Google')" class="social-btn h-10 rounded-xl flex items-center justify-center" title="Google Authentication">
+            <i class="fab fa-google text-sm"></i>
+          </button>
+          <button type="button" onclick="handleProviderSelect('Facebook')" class="social-btn h-10 rounded-xl flex items-center justify-center" title="Facebook Authentication">
+            <i class="fab fa-facebook-f text-sm"></i>
+          </button>
+          <button type="button" onclick="handleProviderSelect('Apple')" class="social-btn h-10 rounded-xl flex items-center justify-center" title="Apple ID Authentication">
+            <i class="fab fa-apple text-base"></i>
+          </button>
+          <button type="button" onclick="handleProviderSelect('X-Twitter')" class="social-btn h-10 rounded-xl flex items-center justify-center" title="X (Twitter) Authentication">
+            <i class="fab fa-x-twitter text-sm"></i>
+          </button>
+          <button type="button" onclick="handleProviderSelect('VK')" class="social-btn h-10 rounded-xl flex items-center justify-center" title="VKontakte Authentication">
+            <i class="fab fa-vk text-sm"></i>
+          </button>
+        </div>
+      </section>
+
+      <!-- =======================================================
+           6. TOKEN INPUT (Full URL or Raw Token + Clear Button)
+           ======================================================= -->
+      <div class="mb-4 reveal">
+        <div class="relative">
+          <i class="fas fa-key absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 text-[11px]"></i>
+          <input
+            type="text"
+            id="tokenInp"
+            class="lux-input rounded-xl py-3.5 pl-10 pr-10"
+            placeholder="Paste URL or Eat token..."
+            autocomplete="off"
+            spellcheck="false"
+            aria-label="Access Token or URL Input"
+          >
+          <button
+            type="button"
+            onclick="clearInput()"
+            id="clearBtn"
+            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-red-500 transition p-1 hidden-el"
+            title="Clear Input"
+          >
+            <i class="fas fa-xmark text-sm"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- =======================================================
+           7. GENERATE BUTTON (Full Width Gold Gradient + Shine)
+           ======================================================= -->
+      <button
+        type="button"
+        onclick="processToken()"
+        id="btn"
+        class="btn-lux w-full rounded-xl py-3.5 mb-5 flex items-center justify-center gap-2 reveal"
+      >
+        <i class="fas fa-diamond text-[10px]"></i>
+        <span>Generate Access</span>
+      </button>
+
+      <!-- =======================================================
+           8. OUTPUT SECTION (Hidden Until Generated)
+           ======================================================= -->
+      <section id="output" class="hidden-el fade-up mb-5" aria-labelledby="outputHeading">
+        <div class="rounded-2xl bg-black/40 border border-[color:var(--card-border)] p-4 shadow-xl">
+          <!-- Header -->
+          <div class="flex items-center gap-2 mb-4 pb-2.5 border-b border-white/[0.06]">
+            <span class="live-dot"></span>
+            <span id="outputHeading" class="text-[10px] font-semibold tracking-[0.2em] uppercase text-[color:var(--gold-bright)]">Extraction Complete</span>
+            <span class="ml-auto text-[10px] font-medium text-emerald-400">✓ Verified</span>
+          </div>
+
+          <!-- 2x2 Grid of Info Tiles -->
+          <div class="grid grid-cols-2 gap-2 mb-4">
+            <div class="info-tile">
+              <div class="lbl">Nickname</div>
+              <div class="val" id="nick" title="Player Nickname">-</div>
+            </div>
+            <div class="info-tile">
+              <div class="lbl">Region</div>
+              <div class="val" id="reg" title="Server Region">-</div>
+            </div>
+            <div class="info-tile">
+              <div class="lbl">Account UID</div>
+              <div class="val" id="aid" title="Account UID">-</div>
+            </div>
+            <div class="info-tile">
+              <div class="lbl">Level</div>
+              <div class="val" id="level" title="Account Level">-</div>
+            </div>
+          </div>
+
+          <!-- Access Token Box -->
+          <div class="mb-4">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-[10px] font-semibold text-[color:var(--gold)] uppercase tracking-[0.2em]">Access Token</span>
+              <button type="button" onclick="copyEl('accessTokenDisplay', this)" class="copy-btn">
+                <i class="fas fa-copy mr-1"></i>Copy
+              </button>
+            </div>
+            <div class="lux-out max-h-[110px]" id="accessTokenDisplay">-</div>
+          </div>
+
+          <!-- Full Response Box -->
+          <div>
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-[10px] font-semibold text-[color:var(--gold)] uppercase tracking-[0.2em]">Full Response</span>
+              <button type="button" onclick="copyEl('apiResponseDisplay', this)" class="copy-btn">
+                <i class="fas fa-copy mr-1"></i>Copy
+              </button>
+            </div>
+            <div class="lux-out max-h-[180px] whitespace-pre-wrap" id="apiResponseDisplay">-</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VISUAL ERROR BOX -->
+      <div id="error-box" class="hidden-el fade-up mb-5">
+        <div class="rounded-2xl bg-red-500/5 border border-red-500/20 p-4 flex items-start gap-3">
+          <i class="fas fa-circle-exclamation text-red-400 mt-0.5 text-sm"></i>
+          <div>
+            <p class="text-[10px] font-semibold uppercase tracking-[0.2em] text-red-400">Error</p>
+            <p class="text-[11px] text-gray-400 mt-1" id="error-message">Something went wrong</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- =======================================================
+           9. FOOTER (Divider + Social Pills + Terms Link)
+           ======================================================= -->
+      <footer class="pt-5 border-t border-white/[0.04] reveal">
+        <!-- Ornamental divider -->
+        <div class="ornament mb-3">
+          <span class="line"></span>
+          <span class="diamond small"></span>
+          <span class="diamond"></span>
+          <span class="diamond small"></span>
+          <span class="line"></span>
+        </div>
+
+        <p class="footer-head">Connect with SUMIT YL3</p>
+
+        <!-- 3 Social Pills -->
+        <div class="grid grid-cols-3 gap-2">
+          <a href="https://t.me/yourusername" target="_blank" rel="noopener noreferrer" class="social-pill social-tg" title="Telegram Channel">
+            <i class="fab fa-telegram-plane"></i>
+            <span>Telegram</span>
+          </a>
+          <a href="https://youtube.com/@yourchannel" target="_blank" rel="noopener noreferrer" class="social-pill social-yt" title="YouTube Channel">
+            <i class="fab fa-youtube"></i>
+            <span>YouTube</span>
+          </a>
+          <a href="https://instagram.com/yourusername" target="_blank" rel="noopener noreferrer" class="social-pill social-ig" title="Instagram Profile">
+            <i class="fab fa-instagram"></i>
+            <span>Instagram</span>
+          </a>
+        </div>
+
+        <!-- Terms & Conditions link -->
+        <div class="text-center mt-4">
+          <button type="button" onclick="openModal()" class="text-[9px] text-gray-600 hover:text-[color:var(--gold-bright)] underline transition tracking-[0.15em] uppercase">
+            Terms &amp; Conditions
+          </button>
+        </div>
+      </footer>
+
+    </main>
+  </div>
+
+  <!-- =========================================================
+       TERMS & CONDITIONS MODAL
+       ========================================================= -->
+  <div id="termsModal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4" onclick="if(event.target===this)closeModal()" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-content bg-[#131316] border border-[color:var(--card-border)] w-full max-w-sm rounded-2xl p-6 relative shadow-2xl">
+      <button type="button" onclick="closeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-white transition p-1" aria-label="Close Terms Modal">
+        <i class="fas fa-xmark text-sm"></i>
+      </button>
+      <h3 id="modalTitle" class="serif text-xl text-white mb-1 text-center">Terms &amp; Conditions</h3>
+      <div class="ornament my-4">
+        <span class="line"></span>
+        <span class="diamond small"></span>
+        <span class="diamond"></span>
+        <span class="diamond small"></span>
+        <span class="line"></span>
+      </div>
+      <div class="text-[11px] text-gray-400 space-y-3 leading-relaxed">
+        <p>This website does not store any sensitive details. We only process basic data client-side to provide quality &amp; fast service.</p>
+        <p class="text-[color:var(--gold-bright)]"><strong>Disclaimer:</strong> Use this tool at your own risk. The developer is not responsible for any misuse.</p>
+        <p class="text-red-400">Do not use these tokens to violate Terms &amp; Conditions or for any unauthorized automation.</p>
+        <p>This tool is made for educational purposes for developers.</p>
+        <p>By using this website, you explicitly agree to our terms.</p>
+      </div>
+      <button type="button" onclick="closeModal()" class="btn-lux w-full mt-6 py-3 rounded-xl">I Agree</button>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       VANILLA JAVASCRIPT LOGIC
+       ========================================================= -->
+  <script>
+    /* Dismiss Preloader on window load */
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const preloader = document.getElementById('preloader');
+        if (preloader) preloader.classList.add('done');
+      }, 800);
+    });
+
+    /* Generate floating gold particles */
+    const particlesContainer = document.getElementById('particles');
+    if (particlesContainer) {
+      for (let i = 0; i < 20; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.animationDuration = (Math.random() * 15 + 15) + 's';
+        p.style.animationDelay = (Math.random() * 20) + 's';
+        const size = (Math.random() * 2 + 1.2);
+        p.style.width = size + 'px';
+        p.style.height = size + 'px';
+        particlesContainer.appendChild(p);
+      }
+    }
+
+    /* Staggered letter reveal for Title */
+    document.querySelectorAll('.brand-title .word').forEach((wordEl, wordIdx) => {
+      const text = wordEl.dataset.text || '';
+      wordEl.innerHTML = '';
+      [...text].forEach((char, i) => {
+        const span = document.createElement('span');
+        span.className = 'letter';
+        span.textContent = char === ' ' ? '\u00A0' : char;
+        span.style.animationDelay = (0.15 + wordIdx * 0.12 + i * 0.04) + 's';
+        wordEl.appendChild(span);
+      });
+    });
+
+    /* Staggered entrance animation for sections */
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.reveal').forEach((el, i) => {
+        setTimeout(() => el.classList.add('in'), 850 + i * 100);
+      });
+    });
+
+    /* 3D card tilt effect on mousemove for desktop */
+    const card = document.getElementById('card');
+    const cardWrap = document.getElementById('cardWrap');
+    const isTouch = window.matchMedia('(pointer: coarse)').matches;
+    if (!isTouch && card && cardWrap) {
+      cardWrap.addEventListener('mousemove', (e) => {
+        const rect = cardWrap.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.transform = `rotateY(${x * 4}deg) rotateX(${-y * 4}deg)`;
+      });
+      cardWrap.addEventListener('mouseleave', () => {
+        card.style.transform = 'rotateY(0deg) rotateX(0deg)';
+      });
+    }
+
+    /* Input controls & Clear button toggle */
+    const tokenInp = document.getElementById('tokenInp');
+    const clearBtn = document.getElementById('clearBtn');
+    if (tokenInp && clearBtn) {
+      tokenInp.addEventListener('input', () => {
+        clearBtn.classList.toggle('hidden-el', tokenInp.value.trim().length === 0);
+      });
+      tokenInp.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') processToken();
+      });
+    }
+
+    function clearInput() {
+      if (!tokenInp) return;
+      tokenInp.value = '';
+      if (clearBtn) clearBtn.classList.add('hidden-el');
+      tokenInp.focus();
+    }
+
+    /* Provider login selection handler */
+    function handleProviderSelect(providerName) {
+      if (!tokenInp) return;
+      tokenInp.placeholder = `Login via ${providerName}, then paste redirected URL here...`;
+      tokenInp.focus();
+    }
+
+    /* Terms Modal Handlers */
+    function openModal() {
+      const modal = document.getElementById('termsModal');
+      if (modal) modal.classList.add('active');
+    }
+    function closeModal() {
+      const modal = document.getElementById('termsModal');
+      if (modal) modal.classList.remove('active');
+    }
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    /* Copy to clipboard utility */
+    function copyEl(id, btn) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const txt = el.textContent;
+      if (!txt || txt === '-') return;
+
+      const fallbackCopy = () => {
+        const textarea = document.createElement('textarea');
+        textarea.value = txt;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        setCopiedFeedback();
+      };
+
+      const setCopiedFeedback = () => {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check mr-1 text-emerald-400"></i>Copied';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.innerHTML = orig;
+          btn.classList.remove('copied');
+        }, 1400);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(txt).then(setCopiedFeedback).catch(fallbackCopy);
+      } else {
+        fallbackCopy();
+      }
+    }
+
+    /* URL & Token Parser (eat, lang, region, account_id, nickname) */
+    function parseUrl(input) {
+      const clean = input.trim();
+      if (!clean) return null;
+
+      if (!clean.includes('http') && !clean.includes('?')) {
+        return {
+          token: clean,
+          lang: 'en',
+          region: 'IND',
+          account_id: '13062505451',
+          nickname: 'DemoPlayer'
+        };
+      }
+
+      try {
+        let u = clean;
+        if (!u.startsWith('http')) u = 'https://' + u;
+        const url = new URL(u);
+        const p = url.searchParams;
+        return {
+          token: p.get('eat') || p.get('token') || p.get('access_token') || '',
+          lang: p.get('lang') || 'en',
+          region: p.get('region') || 'IND',
+          account_id: p.get('account_id') || '13062505451',
+          nickname: p.get('nickname') || 'DemoPlayer'
+        };
+      } catch (err) {
+        return null;
+      }
+    }
+
+    /* Process token generation */
+    function processToken() {
+      if (!tokenInp) return;
+      const input = tokenInp.value.trim();
+      if (!input) return showError('Please enter a URL or token.');
+
+      const data = parseUrl(input);
+      if (!data || !data.token) return showError('No valid token found.');
+
+      const btn = document.getElementById('btn');
+      const origHtml = btn.innerHTML;
+      btn.innerHTML = '<i class="fas fa-circle-notch fa-spin text-xs"></i> Processing...';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        const output = document.getElementById('output');
+        const errorBox = document.getElementById('error-box');
+
+        if (output) output.classList.remove('hidden-el');
+        if (errorBox) errorBox.classList.add('hidden-el');
+
+        const nickEl = document.getElementById('nick');
+        const regEl = document.getElementById('reg');
+        const aidEl = document.getElementById('aid');
+        const levelEl = document.getElementById('level');
+        const tokEl = document.getElementById('accessTokenDisplay');
+        const respEl = document.getElementById('apiResponseDisplay');
+
+        if (nickEl) nickEl.textContent = data.nickname || 'DemoPlayer';
+        if (regEl) regEl.textContent = data.region || 'IND';
+        if (aidEl) aidEl.textContent = data.account_id || '13062505451';
+        if (levelEl) levelEl.textContent = '65';
+        if (tokEl) tokEl.textContent = data.token;
+        if (respEl) respEl.textContent = JSON.stringify(data, null, 2);
+
+        btn.innerHTML = origHtml;
+        btn.disabled = false;
+
+        output.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 700);
+    }
+
+    /* Show error notification */
+    function showError(msg) {
+      const errorBox = document.getElementById('error-box');
+      const errorMsg = document.getElementById('error-message');
+      const output = document.getElementById('output');
+
+      if (errorBox) errorBox.classList.remove('hidden-el');
+      if (errorMsg) errorMsg.textContent = msg;
+      if (output) output.classList.add('hidden-el');
+    }
+  </script>
+</body>
+</html>

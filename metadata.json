@@ -1,0 +1,6 @@
+{
+  "name": "Access Generator",
+  "description": "Dark luxury access token generator tool by SUMIT YL3 for extracting, parsing, and validating tokens with response inspection.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
